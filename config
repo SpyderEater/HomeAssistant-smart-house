@@ -1,0 +1,23 @@
+esphome:
+  name: water_leak_sensor
+  friendly_name: Water Leak Sensor
+
+esp32:
+  board: esp32dev
+wifi:
+  ssid: !secret ssid
+  password: !secret password
+  ap:
+    ssid: "WaterLeakFallback"
+    password: "12345678"
+
+logger:
+api:
+ota:
+
+binary_sensor:
+  - platform: gpio
+    pin: 35
+    name: "Water Leak"
+    device_class: moisture
+
