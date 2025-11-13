@@ -1,23 +1,35 @@
 esphome:
-  name: water_leak_sensor
-  friendly_name: Water Leak Sensor
+  name: water-level-sensor
+  friendly_name: ESP32 Water Sensor
 
 esp32:
   board: esp32dev
+  framework:
+    type: esp-idf
+
+logger:
+
+api:
+  encryption:
+    key: "RVgRgiWAzdxpaqAWgUtP4KqoB9Tglo/9US+k0DgSKQs="
+
+ota:
+  - platform: esphome
+    password: "31e9112d275bd0a017b173e473aa0015"
+
 wifi:
   ssid: !secret ssid
   password: !secret password
-  ap:
-    ssid: "WaterLeakFallback"
-    password: "12345678"
 
-logger:
-api:
-ota:
 
-binary_sensor:
-  - platform: gpio
-    pin: 35
-    name: "Water Leak"
-    device_class: moisture
-
+captive_portal:
+sensor:
+  - platform: adc
+    pin: GPIO35
+    name: "Water Leak Level"
+    update_interval: 1s
+    attenuation: 6db
+    filters:
+      - sliding_window_moving_average:
+          window_size: 5
+          send_every: 1
