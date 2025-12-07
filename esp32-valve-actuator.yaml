@@ -1,0 +1,44 @@
+esphome:
+  name: esp32-valve-actuator
+  friendly_name: ESP32 Valve Actuator
+
+esp32:
+  board: esp32dev
+  framework:
+    type: esp-idf
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "n1CwDPwhGxlfz8q7q3Paj29I865U7T5fSSSNBmVgeoE="
+
+ota:
+  - platform: esphome
+    password: "8a72f73288d1180b5befe7a86795a040"
+
+wifi:
+  ssid: "ASNET"
+  password: "06ASB2015"
+  manual_ip:
+    static_ip: 10.10.15.178
+    gateway: 10.10.15.2
+    subnet: 255.255.255.0
+    dns1: 192.168.0.4
+    dns2: 192.168.0.3
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Esp32-Valve Fallback"
+    password: "12345678"
+
+captive_portal:
+switch:
+  - platform: gpio
+    id: valve_relay
+    name: "Water Valve Relay"
+    pin: GPIO23
+    inverted: true
+    restore_mode: "ALWAYS_OFF"  
+    # ALWAYS_OFF = при старті клапан ВІДКРИТИЙ (безпечний стан)
